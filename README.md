@@ -5,6 +5,8 @@ Also includes a custom module for plugging into ansible to run mikrotik backups.
 
 This is a work in progress. Currently not completely functional.
 
+The stand-alone backup.py script should work. 
+
 # Ansible Module
 Sample task:
 ```
