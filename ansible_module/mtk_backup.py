@@ -11,11 +11,11 @@ def mtk_backup_config(data):
 
     device = {
         'device_type': 'mikrotik_routeros',
-        'ip': fields.host,
-        'port': fields.port,
-        'username': fields.username,
+        'ip': host,
+        'port': port,
+        'username': username,
         #'password': getpass(),
-        'password': fields.password,
+        'password': password,
         #'use_keys': True,
         #'key_file': key_path,
         #'verbose': True
@@ -36,7 +36,7 @@ def mtk_backup_config(data):
     #print(output)
 
     # write output to text file
-    config = open(fields.dest,"w")
+    config = open(path,"w")
     config.write(output)
     config.close()
 
@@ -72,9 +72,9 @@ def main():
     is_error, has_changed, result = mtk_backup_config(module.params)
 
     if not is_error:
-    module.exit_json(changed=has_changed, meta=result)
+        module.exit_json(changed=has_changed, meta=result)
     else:
-    module.fail_json(msg="Error backing up RouterOS", meta=result)
+        module.fail_json(msg="Error backing up RouterOS", meta=result)
 
 if __name__ == '__main__':
     main()
