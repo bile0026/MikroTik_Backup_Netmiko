@@ -20,7 +20,6 @@ def main():
         }
     routeros_argument_spec = {}
 
-
     path = module.params.get('path')
     host = module.params.get('host')
     port = module.params.get('port')
