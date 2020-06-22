@@ -1,34 +1,32 @@
-#!/usr/bin/python
-
-from ansible.module_utils.basic import *
-from netmiko import ConnectHandler
-from getpass import getpass
+import json
+from ansible.module_utils._text import to_text
+from ansible.module_utils.basic import env_fallback
+from ansible.module_utils.network.common.utils import to_list, ComplexList
+from ansible.module_utils.connection import Connection, ConnectionError
 import re
+from netmiko import ConnectHandler
 
-#def mtk_backup_config(data):
-    
+_DEVICE_CONFIGS = {}
 
 def main():
-    module = AnsibleModule(
-        argument_spec=dict(
-            path=dict(type='path', required=True, aliases=['dest', 'name']),
-            host=dict(type='str', required=True, default='localhost', aliases=['ip','hostname']),
-            port=dict(type='int', required = False, default=22),
-            username=dict(type='str', required = True, default='ansible', aliases=['user']),
-            password=dict(type='str', default='ansible', required = True),
-        ),
-        supports_check_mode=False,
-    )
+    module = routeros_provider_spec = {
+            'host': dict(),
+            'port': dict(type='int'),
+            'username': dict(fallback=(env_fallback, ['ANSIBLE_NET_USERNAME'])),
+            'password': dict(fallback=(env_fallback, ['ANSIBLE_NET_PASSWORD']), no_log=True),
+            'ssh_keyfile': dict(fallback=(env_fallback, ['ANSIBLE_NET_SSH_KEYFILE']), type='path'),
+            'timeout': dict(type='int'),
+            'destination': dict(type='path', default='config.txt', aliases=['dest', 'name', 'path'])
+        }
+    routeros_argument_spec = {}
+
 
     path = module.params.get('path')
     host = module.params.get('host')
     port = module.params.get('port')
     password = module.params.get('password')
     username = module.params.get('username') 
-
-    is_error = False
-    has_changed = False
-
+    
     device = {
         'device_type': 'mikrotik_routeros',
         'ip': host,
@@ -68,7 +66,7 @@ def main():
 
     meta = {"status" : "OK", "response" : resp}
 
-    return is_error, has_changed, meta
+    #return is_error, has_changed, meta
 
     #is_error, has_changed, result = mtk_backup_config(module.params)
 
@@ -79,3 +77,5 @@ def main():
 
 if __name__ == '__main__':
     main()
+
+
