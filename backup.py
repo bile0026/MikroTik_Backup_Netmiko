@@ -1,3 +1,6 @@
+#!/usr/bin/python
+
+#import required modules
 from netmiko import ConnectHandler
 from getpass import getpass
 import re
