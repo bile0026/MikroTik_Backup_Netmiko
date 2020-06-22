@@ -2,6 +2,7 @@
 .vscode
 .venv
 *.txt
+*.cfg
 
 # Compiled source #
 ###################
